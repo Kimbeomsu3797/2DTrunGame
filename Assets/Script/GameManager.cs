@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,10 +10,19 @@ public class GameManager : MonoBehaviour
     public GameObject[] Status;
     public Text[] swordmanTxt, priestTxt, witchTxt;
     public GameObject[] players;
+    
+    public Slider turn;
+    public TextMeshProUGUI turntxt;
+    public float turnTime = 10;
+    CoolTime ct;
+    public bool playerTurn = true;
+    public bool MonsterTurn = false;
+    public bool CurrTurn = false;
     public Dictionary<string, GameObject> statusValue = new Dictionary<string, GameObject>();
     private void Awake()
     {
         ins = this;
+        ct = new CoolTime();
     }
     // Start is called before the first frame update
     void Start()
@@ -32,6 +42,24 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         StatusShow();
+        turn.value = ct.Timer(turnTime);
+        if(turn.value == 0)
+        {
+            playerTurn = !playerTurn;
+            CurrTurn = !playerTurn;
+            if (playerTurn)
+            {
+                turntxt.text = "Player Turn";
+                MonsterTurn = false;
+            }
+            else
+            {
+                MonsterTurn = true;
+                turntxt.text = "Monster Turn";
+            }
+
+        }
+        Debug.Log("CurrTurn : " + CurrTurn);
         //StatusView("검사", statusValue, swordmanTxt);
         //StatusView("사제", statusValue, priestTxt);
         //StatusView("마법사", statusValue, witchTxt);

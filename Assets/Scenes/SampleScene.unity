@@ -5307,6 +5307,12 @@ MonoBehaviour:
   - {fileID: 1457311217}
   - {fileID: 1812912177}
   - {fileID: 2108768638}
+  turn: {fileID: 593975092}
+  turntxt: {fileID: 1582826056}
+  turnTime: 10
+  playerTurn: 1
+  MonsterTurn: 0
+  CurrTurn: 0
 --- !u!4 &1444932758
 Transform:
   m_ObjectHideFlags: 0
