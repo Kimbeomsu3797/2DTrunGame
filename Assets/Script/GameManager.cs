@@ -10,7 +10,9 @@ public class GameManager : MonoBehaviour
     public GameObject[] Status;
     public Text[] swordmanTxt, priestTxt, witchTxt;
     public GameObject[] players;
-    
+
+    public GameObject Monster1, Monster2, Monster3;
+    public List<GameObject> L_Monster = new List<GameObject>();
     public Slider turn;
     public TextMeshProUGUI turntxt;
     public float turnTime = 10;
@@ -36,6 +38,9 @@ public class GameManager : MonoBehaviour
         swordmanTxt = Status[2].GetComponentsInChildren<Text>();
         priestTxt = Status[1].GetComponentsInChildren<Text>();
         witchTxt = Status[0].GetComponentsInChildren<Text>();
+        L_Monster.Add(Monster1);
+        L_Monster.Add(Monster2);
+        L_Monster.Add(Monster3);
     }
 
     // Update is called once per frame
@@ -46,7 +51,7 @@ public class GameManager : MonoBehaviour
         if(turn.value == 0)
         {
             playerTurn = !playerTurn;
-            CurrTurn = !playerTurn;
+            CurrTurn = playerTurn;
             if (playerTurn)
             {
                 turntxt.text = "Player Turn";
@@ -54,10 +59,11 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                MonsterTurn = true;
                 turntxt.text = "Monster Turn";
+                MonsterTurn = true;
+                
             }
-
+            
         }
         Debug.Log("CurrTurn : " + CurrTurn);
         //StatusView("°Ë»ç", statusValue, swordmanTxt);
