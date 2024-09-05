@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Status
   - Monster
+  - player
   layers:
   - Default
   - TransparentFX

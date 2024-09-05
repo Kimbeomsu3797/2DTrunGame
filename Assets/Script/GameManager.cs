@@ -21,10 +21,14 @@ public class GameManager : MonoBehaviour
     public bool MonsterTurn = false;
     public bool CurrTurn = false;
     public Dictionary<string, GameObject> statusValue = new Dictionary<string, GameObject>();
+    public GameObject gameover;
+    public GameObject gamewin;
     private void Awake()
     {
         ins = this;
         ct = new CoolTime();
+        gameover.SetActive(false);
+        gamewin.SetActive(false);
     }
     // Start is called before the first frame update
     void Start()
@@ -42,7 +46,8 @@ public class GameManager : MonoBehaviour
         L_Monster.Add(Monster2);
         L_Monster.Add(Monster3);
     }
-
+    GameObject[] monster;
+    public bool attCheck = true;
     // Update is called once per frame
     void Update()
     {
@@ -50,8 +55,7 @@ public class GameManager : MonoBehaviour
         turn.value = ct.Timer(turnTime);
         if(turn.value == 0)
         {
-            playerTurn = !playerTurn;
-            CurrTurn = playerTurn;
+            
             if (playerTurn)
             {
                 turntxt.text = "Player Turn";
@@ -61,11 +65,25 @@ public class GameManager : MonoBehaviour
             {
                 turntxt.text = "Monster Turn";
                 MonsterTurn = true;
-                
+                monster = GameObject.FindGameObjectsWithTag("monster");
+                StartCoroutine(MonsterAttack());
             }
-            
+            playerTurn = !playerTurn;
+            CurrTurn = playerTurn;
         }
         Debug.Log("CurrTurn : " + CurrTurn);
+        if(statusValue.Count > 0)
+        {
+            StatusShow();
+        }
+        if(statusValue.Count == 0)
+        {
+            gameover.SetActive(true);
+        }
+        if(L_Monster.Count == 0)
+        {
+            gamewin.SetActive(true);
+        }
         //StatusView("검사", statusValue, swordmanTxt);
         //StatusView("사제", statusValue, priestTxt);
         //StatusView("마법사", statusValue, witchTxt);
@@ -80,6 +98,18 @@ public class GameManager : MonoBehaviour
         txt[3].text = "HP : " + (st.Hp).ToString() + " / " + (st.MaxHp).ToString();
         txt[4].text = "MP : " + (st.Mp).ToString() + " / " + (st.MaxMp).ToString();
     }*/
+    IEnumerator MonsterAttack()
+    {
+        int i = 0;
+        while (MonsterTurn)
+        {
+            if(L_Monster.Count != 0)
+            {
+                L_Monster[(i++) % L_Monster.Count].GetComponent<Monster>().NomalAttack();
+            }
+            yield return new WaitForSeconds(2f);
+        }
+    }
     void StatusShow()
     {
         if (statusValue.ContainsKey("검사"))
